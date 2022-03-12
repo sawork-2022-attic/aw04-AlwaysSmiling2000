@@ -67,14 +67,14 @@ public class PosInMemoryDB implements PosDB {
     }
 
     private PosInMemoryDB() {
-        this.products.put("PD1", new Product("PD1", "iPhone 13", 8999, "1.jpg"));
-        this.products.put("PD2", new Product("PD2", "MacBook Pro", 29499, "2.jpg"));
-        this.products.put("PD3", new Product("PD3", "MacBook Pro", 29499, "3.jpg"));
-        this.products.put("PD4", new Product("PD4", "MacBook Pro", 29499, "4.jpg"));
-        this.products.put("PD5", new Product("PD5", "MacBook Pro", 29499, "5.jpg"));
-        this.products.put("PD6", new Product("PD6", "MacBook Pro", 29499, "6.jpg"));
-        this.products.put("PD7", new Product("PD7", "MacBook Pro", 29499, "7.jpg"));
-        this.products.put("PD8", new Product("PD8", "MacBook Pro", 29499, "comp.png"));
+        this.products.put("PD1", new Product("PD1", "Mac Pro", 5999, "1.jpg", "https://www.apple.com/shop/buy-mac/mac-pro"));
+        this.products.put("PD2", new Product("PD2", "iPhone 13 Pro", 999, "2.jpg", "https://www.apple.com/shop/buy-iphone/iphone-13-pro"));
+        this.products.put("PD3", new Product("PD3", "iPad Pro", 799, "3.jpg", "https://www.apple.com/shop/buy-ipad/ipad-pro"));
+        this.products.put("PD4", new Product("PD4", "Apple Watch Hermès", 1229, "4.jpg", "https://www.apple.com/shop/buy-watch/apple-watch-hermes"));
+        this.products.put("PD5", new Product("PD5", "AirPods Max", 549, "5.png", "https://www.apple.com/shop/buy-airpods/airpods-max"));
+        this.products.put("PD6", new Product("PD6", "Apple TV 4K", 199, "6.jpg", "https://www.apple.com/shop/buy-tv/apple-tv-4k"));
+        this.products.put("PD7", new Product("PD7", "AirTag", 29, "7.jpg", "https://www.apple.com/shop/buy-airtag/airtag"));
+        this.products.put("PD8", new Product("PD8", "HomePod mini", 99, "8.jpg", "https://www.apple.com/shop/buy-homepod/homepod-mini"));
     }
 
 }

@@ -15,4 +15,7 @@ public class Product {
 
     private String image;
 
+    // just for fun
+    private String url;
+
 }

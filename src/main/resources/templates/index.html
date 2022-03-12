@@ -132,12 +132,12 @@
                 <span class="badge-new"> NEW </span>
                 <div class="img-wrap">
                   <img th:src="@{${'/images/items/'+ product.image}}" />
-                  <a class="btn-overlay" href="#">
+                  <a class="btn-overlay" th:href="${product.url}" target="_blank">
                     <i class="fa fa-search-plus"></i> Quick view
                   </a>
                 </div>
                 <figcaption class="info-wrap">
-                  <a href="#" class="title">
+                  <a th:href="${product.url}" class="title" target="_blank">
                     <span th:text="${product.name}"></span>
                   </a>
                   <div class="action-wrap">
