@@ -1,8 +1,8 @@
 package com.example.webpos.biz;
 
 import com.example.webpos.db.PosDB;
-import com.example.webpos.model.Cart;
 import com.example.webpos.model.Item;
+import com.example.webpos.model.Order;
 import com.example.webpos.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,47 +20,38 @@ public class PosServiceImp implements PosService {
     }
 
     @Override
-    public Cart getCart() {
-
-        Cart cart = posDB.getCart();
-        if (cart == null){
-            cart = this.newCart();
-        }
-        return cart;
+    public List<Item> getCart() {
+        return posDB.getCart();
     }
 
     @Override
-    public Cart newCart() {
-        return posDB.saveCart(new Cart());
+    public Order checkout() {
+        return getOrder();
     }
 
     @Override
-    public void checkout(Cart cart) {
-
-    }
-
-    @Override
-    public void total(Cart cart) {
-
-    }
-
-    @Override
-    public boolean add(Product product, int amount) {
-        return false;
+    public Order getOrder() {
+        return new Order(posDB.getCart());
     }
 
     @Override
     public boolean add(String productId, int amount) {
+        return posDB.addItem(productId, amount);
+    }
 
-        Product product = posDB.getProduct(productId);
-        if (product == null) return false;
+    @Override
+    public boolean remove(String productId) {
+        return posDB.removeItem(productId);
+    }
 
-        this.getCart().addItem(new Item(product, amount));
-        return true;
+    @Override
+    public boolean empty() {
+        return posDB.emptyCart();
     }
 
     @Override
     public List<Product> products() {
         return posDB.getProducts();
     }
+
 }
