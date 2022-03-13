@@ -171,7 +171,7 @@
                 </tr>
               </thead>
               <tbody id="cart-list">
-                <tr th:each="item : ${cart}">
+                <tr th:each="item : ${cart}" th:id="'row-' + ${item.product.id}">
                   <td>
                     <figure class="media">
                       <div class="img-wrap">
@@ -186,13 +186,13 @@
                   </td>
                   <td class="text-center">
                     <div class="m-btn-group m-btn-group--pill btn-group mr-2" role="group" aria-label="...">
-                      <button type="button" class="m-btn btn btn-default">
+                      <button type="button" class="m-btn btn btn-default" th:onclick="ajaxAdd(event, [[${item.product.id}]], -1)">
                         <i class="fa fa-minus"></i>
                       </button>
                       <button type="button" class="m-btn btn btn-default" disabled="">
-                        <span th:text="${item.quantity}"></span>
+                        <span th:text="${item.quantity}" th:id="'qty-' + ${item.product.id}"></span>
                       </button>
-                      <button type="button" class="m-btn btn btn-default">
+                      <button type="button" class="m-btn btn btn-default" th:onclick="ajaxAdd(event, [[${item.product.id}]], 1)">
                         <i class="fa fa-plus"></i>
                       </button>
                     </div>
@@ -200,13 +200,13 @@
                   <td>
                     <div class="price-wrap">
                       <var class="price">
-                        <span th:text="'$' + ${item.product.price}"></span>
+                        <span th:text="'$' + ${#numbers.formatDecimal(item.product.price, 1, 2)}"></span>
                       </var>
                     </div>
                     <!-- price-wrap .// -->
                   </td>
                   <td class="text-right">
-                    <a href="" class="btn btn-outline-danger">
+                    <a href="#" class="btn btn-outline-danger" th:onclick="ajaxRemove(event, [[${item.product.id}]])">
                       <i class="fa fa-trash"></i>
                     </a>
                   </td>
@@ -221,33 +221,27 @@
             <dt>
               Tax:
             </dt>
-            <dd class="text-right" id="tax">
-              0%
-            </dd>
+            <dd class="text-right" id="tax" th:text="${#numbers.formatDecimal(order.tax * 100, 1, 1)} + '%'"></dd>
           </dl>
           <dl class="dlist-align">
             <dt>
               Discount:
             </dt>
             <dd class="text-right">
-              <a href="#" id="discount">0%</a>
+              <a href="#" id="discount" th:text="${#numbers.formatDecimal(order.discount * 100, 1, 1)} + '%'"></a>
             </dd>
           </dl>
           <dl class="dlist-align">
             <dt>
               Sub Total:
             </dt>
-            <dd class="text-right" id="sub-total">
-              $0
-            </dd>
+            <dd class="text-right" id="sub-total" th:text="'$' + ${#numbers.formatDecimal(order.subTotal, 1, 2)}"></dd>
           </dl>
           <dl class="dlist-align">
             <dt>
               Total:
             </dt>
-            <dd class="text-right h4 b" id="total">
-              $0
-            </dd>
+            <dd class="text-right h4 b" id="total" th:text="'$' + ${#numbers.formatDecimal(order.total, 1, 2)}"></dd>
           </dl>
           <div class="row">
             <div class="col-md-6">
@@ -287,10 +281,6 @@
     $("#cart").height(445);
     $("#cart").overlayScrollbars({});
   });
-
-  // refresh the order info
-  ajaxRefreshOrder();
-
 </script>
 </body>
 </html>

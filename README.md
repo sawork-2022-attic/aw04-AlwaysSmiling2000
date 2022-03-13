@@ -28,3 +28,7 @@ The view defines how the data should be displayed and how the app should be inte
 ## The Controller
 
 The controller performs logic that updates the model and view in response to request from users. It's designed to decouple view and model, so that the model needn't know how the data is displayed and focus on the implementation of business logic. It also makes the view and model transparent to each other. With controller routing the messages, the view needn't know which model it's interacting with or whether it's communicating with the same model, and vice versa. This provides us with a lot of flexibility to extend the application.
+
+# Comments
+
+It's cumbersome to initialize with a template engine and then update using js. Developers must ensure that the template is consistent with the js code. Otherwise, it's very likely that you'll get some buggy performance after refreshing the web page.

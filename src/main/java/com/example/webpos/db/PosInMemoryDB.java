@@ -4,10 +4,7 @@ import com.example.webpos.model.Item;
 import com.example.webpos.model.Product;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class PosInMemoryDB implements PosDB {
@@ -15,7 +12,7 @@ public class PosInMemoryDB implements PosDB {
     private Map<String, Product> products = new HashMap<>();
 
     // single cart
-    private Map<String, Integer> cart = new HashMap<>();
+    private Map<String, Item> cart = new HashMap<>();
 
     @Override
     public List<Product> getProducts() {
@@ -23,13 +20,23 @@ public class PosInMemoryDB implements PosDB {
     }
 
     @Override
-    public boolean addItem(String productId, int amount) {
-        int count = cart.getOrDefault(productId, 0);
-        // should remove the item, or not allow users to click '-'
-        if (count > 0 && count + amount <= 0) {
-            cart.remove(productId);
+    public boolean addItem(String productId, int quantity) {
+        if (cart.containsKey(productId)) {
+            // an existing one
+            Item item = cart.get(productId);
+            int prevQuan = item.getQuantity();
+            if (prevQuan + quantity > 0) {
+                // update quantity
+                item.setQuantity(prevQuan + quantity);
+            } else {
+                // remove this item
+                cart.remove(productId);
+            }
+        } else if (quantity > 0) {
+            cart.put(productId, new Item(products.get(productId), quantity, System.currentTimeMillis()));
         } else {
-            cart.put(productId, count + amount);
+            // add a new item with negative quantity
+            return false;
         }
         return true;
     }
@@ -46,8 +53,12 @@ public class PosInMemoryDB implements PosDB {
 
     @Override
     public List<Item> getCart() {
-        List<Item> items = new ArrayList<>();
-        cart.forEach((productId, amount) -> items.add(new Item(products.get(productId), amount)));
+        List<Item> items = new ArrayList<>(cart.values());
+        // sort by timestamp
+        items.sort((i1, i2) -> {
+            long dts = i1.getTimestamp() - i2.getTimestamp();
+            return dts < 0 ? -1 : (dts > 0 ? 1 : 0);
+        });
         return items;
     }
 

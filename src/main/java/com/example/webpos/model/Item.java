@@ -11,4 +11,6 @@ public class Item {
 
     private int quantity;
 
+    private Long timestamp;
+
 }

@@ -30,6 +30,7 @@ public class PosController {
     public String pos(Model model) {
         model.addAttribute("products", posService.products());
         model.addAttribute("cart", posService.getCart());
+        model.addAttribute("order", new Order(posService.getCart()));
         return "index";
     }
 
