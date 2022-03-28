@@ -1,0 +1,23 @@
+spring:
+  session:
+    store-type: redis
+  redis:
+    port: 6379
+    host: 172.27.136.169 # change this to your IP address
+  data:
+    redis:
+      repositories:
+        enabled: true
+    jdbc:
+      repositories:
+        enabled: false
+    jpa:
+      repositories:
+        enabled: false
+  h2:
+    console:
+      enabled: false
+
+pos:
+  service:
+    cache-type: redis
