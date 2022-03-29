@@ -22,4 +22,14 @@ public class SessionData implements Serializable {
         messages.add(message);
     }
 
+    public void removeMessage(int msgIdx) {
+        if (msgIdx >= 0 && msgIdx < messages.size()) {
+            messages.remove(msgIdx);
+        }
+    }
+
+    public void removeAllMessages() {
+        messages.clear();
+    }
+
 }

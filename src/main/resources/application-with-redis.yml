@@ -3,7 +3,7 @@ spring:
     store-type: redis
   redis:
     port: 6379
-    host: 172.27.136.169 # change this to your IP address
+    host: 172.27.139.1 # change this to your IP address
   data:
     redis:
       repositories:
@@ -17,6 +17,10 @@ spring:
   h2:
     console:
       enabled: false
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 pos:
   service:

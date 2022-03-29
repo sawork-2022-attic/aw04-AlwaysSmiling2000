@@ -26,7 +26,7 @@ However, there is a big problem here and the implementation is actually wrong. I
 
 ## Data Caching and Session Sharing
 
-To solve the above problem, we'll need a common cache so that the same session can be shared between the servers. In addition, we're also going to cache the query results so that each query is carried out only once. By changing the `active` field in `application-properties` to be `with-redis`, we get the final version (the redis corresponding stuff can be found [here](redis/redis.md)): 
+To solve the above problem, we'll need a common cache so that the same session can be shared between the servers. In addition, we're also going to cache the query results so that each query is carried out only once. By changing the `active` field in `application-properties` to be `with-redis` (also remember to change the IP address in `application-with-redis.yml`), we get the final version (the redis corresponding stuff can be found [here](redis/redis.md)): 
 
 ![statistics_with_redis](snapshot/with-redis/statistics.png)
 
@@ -40,4 +40,4 @@ The application now runs correctly, but with a slightly increased delay. It's ju
 
 I've seen the discussion about whether to implement the add/remove operation in original webpos application. However, I have finished this assignment at that time and decided not to refactor it anyway. 
 
-As an alternative, the demo here will support add/remove a message to further illustrate the data consistency in scalable web applications. You can check out the correctness.
+As an alternative, the demo here will support add/remove a message to further illustrate the data consistency in scalable web applications. You can check for correctness by starting two server instances, a haproxy server and a redis server (using configuration files provided here).

@@ -5,6 +5,39 @@
 <head>
   <meta charset="UTF-8">
   <title>HTML Template for Scalable Web Application</title>
+  <script type="text/javascript">
+    removeMessage = async (event, idx) => {
+      event.preventDefault();
+
+      // send a request without ajax
+      var form = document.createElement("form");
+      form.setAttribute("action", "/");
+      form.setAttribute("method", "POST");
+
+      // form can not submit PUT or DELETE request directly
+      var methodType = document.createElement("input");
+      methodType.setAttribute("type", "hidden");
+      methodType.setAttribute("name", "_method");
+      methodType.setAttribute("value", "delete");
+
+      // the parameter
+      var msgIdx = document.createElement("input");
+      msgIdx.setAttribute("name", "msgIdx");
+      msgIdx.setAttribute("value", `${idx}`);
+
+      form.appendChild(methodType);
+      form.appendChild(msgIdx);
+      document.body.appendChild(form);
+
+      form.submit();
+
+      document.body.removeChild(form);
+    }
+
+    removeAllMessages = (event) => {
+      removeMessage(event, -1);
+    }
+  </script>
 </head>
 <body>
   <form action="/" method="post">
@@ -14,9 +47,11 @@
   <br/>
 
   Messages Submitted: <br/>
-  <ul th:each="msg:${messages}">
-    <li th:text="${msg}">Message Content</li>
+  <ul th:each="msg,iterState:${messages}">
+    <li th:text="${msg}" style="display: inline-block">Message Content</li>
+    <button th:onclick="removeMessage(event, [[${iterState.index}]])">remove</button>
   </ul>
+  <button onclick="removeAllMessages(event)" style="margin-bottom: 15px">remove all</button>
 
   <form action="/query" method="get">
     Query key: <select name="key">

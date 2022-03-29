@@ -41,11 +41,20 @@ public class PosController {
 
     // use @RequestParam and Map to get url-encoded data
     @PostMapping("/")
-    public String addMessage(@RequestParam Map<String, String> body) {
-        String message = body.getOrDefault("message", null);
+    public String addMessage(@RequestParam(value = "message", required = false) String message) {
         if (message != null && !message.isBlank()) {
             // does have a message
             sessionData.addMessage(message);
+        }
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/")
+    public String removeMessage(@RequestParam("msgIdx") int msgIdx) {
+        if (msgIdx >= 0) {
+            sessionData.removeMessage(msgIdx);
+        } else if (msgIdx == -1) {
+            sessionData.removeAllMessages();
         }
         return "redirect:/";
     }
