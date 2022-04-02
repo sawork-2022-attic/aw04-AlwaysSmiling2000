@@ -8,13 +8,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 // service implementation using a local cache
 public class LocalPosService implements PosService {
 
     private final PosDB posDB;
 
-    private final Map<Integer, Object> localCache = new HashMap<>();
+    private final Map<Integer, Object> localCache = new ConcurrentHashMap<>();
 
     public LocalPosService(PosDB posDB) {
         this.posDB = posDB;
