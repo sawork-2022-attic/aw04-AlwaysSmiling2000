@@ -3,13 +3,14 @@ package com.example.webpos.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
 // just for display
 @Data
 @NoArgsConstructor
-public class Order {
+public class Order implements Serializable {
 
     private String id = UUID.randomUUID().toString();
 
@@ -30,5 +31,4 @@ public class Order {
         double taxFee = subTotal * tax;
         total = subTotal * (1 - discount) + taxFee;
     }
-
 }

@@ -1,9 +1,9 @@
 function ajaxAdd(event, id, amount) {
   event.preventDefault();
   $.ajax({
-    url : `/cart/${id}?amount=${amount}`,
+    url : `/cart/${id}?quantity=${amount}`,
     method : "POST",
-    success : (items) => {renderItems(items); ajaxRefreshOrder()},
+    success : refreshSideBar,
     error : () => {}
   });
 }
@@ -13,7 +13,7 @@ function ajaxRemove(event, id) {
   $.ajax({
     url : `/cart/${id}`,
     method : "DELETE",
-    success : (items) => {renderItems(items); ajaxRefreshOrder()},
+    success : refreshSideBar,
     error : () => {}
   });
 }
@@ -23,7 +23,7 @@ function ajaxEmpty(event) {
   $.ajax({
     url : "/cart",
     method : "DELETE",
-    success : (items) => {renderItems(items); ajaxRefreshOrder()},
+    success : refreshSideBar,
     error : () => {}
   });
 }
@@ -33,25 +33,23 @@ function ajaxCharge(event) {
   $.ajax({
     url : "/order",
     method : "POST",
-    success : (order) => {alert(order.total.toFixed(2) + " dollars spent!"); renderOrder(order)},
+    success : order => alert("Successfully spent $" + order.total.toFixed(2) + "!"),
     error : () => {}
   });
 }
 
-function ajaxRefreshOrder() {
+function refreshSideBar() {
+  ajaxRefreshItems();
+  ajaxRefreshOrder();
+}
+
+function ajaxRefreshItems() {
   $.ajax({
-    url : "/order",
+    url : "/cart",
     method : "GET",
-    success : renderOrder,
+    success : renderItems,
     error : () => {}
   });
-}
-
-function renderOrder(order) {
-  $("#tax").html((order.tax * 100).toFixed(1) + "%");
-  $("#discount").html((order.discount * 100).toFixed(1) + "%");
-  $("#sub-total").html("$" + order.subTotal.toFixed(2));
-  $("#total").html("$" + order.total.toFixed(2));
 }
 
 const renderItems = (() => {
@@ -75,12 +73,10 @@ const renderItems = (() => {
           <td>
             <figure class="media">
               <div class="img-wrap">
-                <img src="/images/items/${image}" class="img-thumbnail img-xs" />
+                <img src="${image}" class="img-thumbnail img-xs" />
               </div>
               <figcaption class="media-body">
-                <h6 class="title text-truncate">
-                  <span>${name}</span>
-                </h6>
+                <h6 class="title text-truncate" style="max-width: 225px">${name}</h6>
               </figcaption>
             </figure>
           </td>
@@ -142,3 +138,19 @@ const renderItems = (() => {
   }
 
 })();
+
+function ajaxRefreshOrder() {
+  $.ajax({
+    url : "/order",
+    method : "GET",
+    success : renderOrder,
+    error : () => {}
+  });
+}
+
+function renderOrder(order) {
+  $("#tax").html((order.tax * 100).toFixed(1) + "%");
+  $("#discount").html((order.discount * 100).toFixed(1) + "%");
+  $("#sub-total").html("$" + order.subTotal.toFixed(2));
+  $("#total").html("$" + order.total.toFixed(2));
+}

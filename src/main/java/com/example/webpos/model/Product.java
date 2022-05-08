@@ -3,9 +3,11 @@ package com.example.webpos.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
-public class Product {
+public class Product implements Serializable {
 
     private String id;
 
@@ -17,5 +19,4 @@ public class Product {
 
     // just for fun
     private String url;
-
 }

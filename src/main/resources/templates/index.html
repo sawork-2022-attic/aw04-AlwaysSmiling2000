@@ -131,7 +131,7 @@
               <figure class="card card-product">
                 <span class="badge-new"> NEW </span>
                 <div class="img-wrap">
-                  <img th:src="@{${'/images/items/'+ product.image}}" />
+                  <img th:src="${product.image}" />
                   <a class="btn-overlay" th:href="${product.url}" target="_blank">
                     <i class="fa fa-search-plus"></i> Quick view
                   </a>
@@ -175,12 +175,10 @@
                   <td>
                     <figure class="media">
                       <div class="img-wrap">
-                        <img th:src="@{${'/images/items/'+ item.product.image}}" class="img-thumbnail img-xs" />
+                        <img th:src="${item.product.image}" class="img-thumbnail img-xs" />
                       </div>
                       <figcaption class="media-body">
-                        <h6 class="title text-truncate">
-                          <span th:text="${item.product.name}"></span>
-                        </h6>
+                        <h6 class="title text-truncate" th:text="${item.product.name}" style="max-width: 225px"></h6>
                       </figcaption>
                     </figure>
                   </td>
@@ -245,14 +243,14 @@
           </dl>
           <div class="row">
             <div class="col-md-6">
-              <a href="#" class="btn  btn-default btn-error btn-lg btn-block" onclick="ajaxEmpty(event)">
+              <button  class="btn  btn-default btn-error btn-lg btn-block" onclick="ajaxEmpty(event)">
                 <i class="fa fa-times-circle "></i> Cancel
-              </a>
+              </button>
             </div>
             <div class="col-md-6">
-              <a href="#" class="btn  btn-primary btn-lg btn-block" onclick="ajaxCharge(event)">
+              <button  class="btn  btn-primary btn-lg btn-block" onclick="ajaxCharge(event)">
                 <i class="fa fa-shopping-bag"></i> Charge
-              </a>
+              </button>
             </div>
           </div>
         </div>

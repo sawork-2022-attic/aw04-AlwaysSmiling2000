@@ -3,23 +3,24 @@ package com.example.webpos.biz;
 import com.example.webpos.model.Item;
 import com.example.webpos.model.Order;
 import com.example.webpos.model.Product;
+import org.apache.tomcat.util.http.parser.HttpParser;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 
 public interface PosService {
 
-    public List<Item> getCart();
+    List<Product> products();
 
-    public List<Product> products();
+    List<Item> cartItems();
 
-    public boolean add(String productId, int amount);
+    boolean add(String productId, int quantity);
 
-    public boolean remove(String productId);
+    boolean remove(String productId);
 
-    public boolean empty();
+    boolean empty();
 
-    public Order checkout();
+    Order checkout();
 
-    public Order getOrder();
-
+    Order getOrder();
 }

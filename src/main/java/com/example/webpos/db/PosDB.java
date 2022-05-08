@@ -7,16 +7,7 @@ import java.util.List;
 
 public interface PosDB {
 
-    public List<Product> getProducts();
+    Product getProduct(String productId);
 
-    public boolean addItem(String productId, int amount);
-
-    public boolean removeItem(String productId);
-
-    public List<Item> getCart();
-
-    public boolean emptyCart();
-
-    public Product getProduct(String productId);
-
+    List<Product> getProducts();
 }

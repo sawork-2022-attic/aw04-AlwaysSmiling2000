@@ -11,26 +11,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Slf4j
 @Controller
 public class PosController {
 
-    private PosService posService;
-
     @Autowired
-    public void setPosService(PosService posService) {
-        this.posService = posService;
-    }
+    private PosService posService;
 
     @GetMapping("/")
     public String pos(Model model) {
         model.addAttribute("products", posService.products());
-        model.addAttribute("cart", posService.getCart());
-        model.addAttribute("order", new Order(posService.getCart()));
+        model.addAttribute("cart", posService.cartItems());
+        model.addAttribute("order", posService.getOrder());
         return "index";
     }
 
@@ -38,33 +32,42 @@ public class PosController {
     // change the number of an existing one
     @ResponseBody
     @PostMapping("/cart/{productId}")
-    public ResponseEntity<List<Item>> add(@PathVariable("productId") String productId, @RequestParam("amount") int amount) {
+    public ResponseEntity<Void> add(
+            @PathVariable("productId") String productId,
+            @RequestParam("quantity") int quantity
+    ) {
         // add successfully
-        if (posService.add(productId, amount)) {
+        if (posService.add(productId, quantity)) {
             // return the new list of items, inefficient
-            return ResponseEntity.ok().body(posService.getCart());
+            return ResponseEntity.ok().build();
         }
         // fail for some reason
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     // remove an existing item in the cart
     @ResponseBody
     @DeleteMapping("/cart/{productId}")
-    public ResponseEntity<List<Item>> remove(@PathVariable("productId") String productId) {
+    public ResponseEntity<Void> remove(@PathVariable("productId") String productId) {
         // remove successfully
         if (posService.remove(productId)) {
-            return ResponseEntity.ok().body(posService.getCart());
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+    }
+
+    @ResponseBody
+    @GetMapping("/cart")
+    public ResponseEntity<List<Item>> getCart() {
+        return ResponseEntity.ok().body(posService.cartItems());
     }
 
     // empty the cart
     @ResponseBody
     @DeleteMapping("/cart")
-    public ResponseEntity<List<Item>> empty() {
+    public ResponseEntity<Void> empty() {
         if (posService.empty()) {
-            return ResponseEntity.ok().body(posService.getCart());
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
     }
@@ -88,5 +91,4 @@ public class PosController {
     public ResponseEntity<Order> getOrder() {
         return ResponseEntity.ok().body(posService.getOrder());
     }
-
 }
